@@ -115,6 +115,10 @@ def cyan(str):
 def red(str):
     return Fore.RED + str
 
+def cls(arr):
+    while len(arr) > 0:
+        arr.pop()
+
 def lfsr_64bits(lfsr_init_str, l_mode):
     key = lfsr_init_str[0:len(lfsr_init_str)]
     new_bit = lfsr_init_str[l_mode[0]]
@@ -138,4 +142,5 @@ def key_generation(nb_key):
     k = [None]*nb_key
     for j in range(nb_key):
         k[j] = lfsr_64bits(lfsr_init_str,lfsr_mode[j])
+    # [12434255084567487610, 12582277207756613454, 12440124641901924412, 12469516777473785570]
     return k

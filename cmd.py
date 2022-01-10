@@ -1,7 +1,7 @@
 #!/usr/bin/python3  
 # -*- coding: UTF-8 -*-
 
-from   util     import magenta, cyan, green, dechunk, rFile, wFile
+from   util     import magenta, cyan, green, dechunk, rFile, wFile, cls
 from   cts      import MODE_ECB, MODE_CBC
 from   fish     import cipher_threefish_msg
 from   fish     import decipher_threefish_msg
@@ -50,10 +50,6 @@ rs = []                # rs answers of user
 
 L = lambda arr: (arr[len(arr) - 1])
 F = lambda arr: (arr[0])
-
-def cls(arr):
-    while len(arr) > 0:
-        arr.pop()
 
 def ask(arr):
     n = len(arr)
