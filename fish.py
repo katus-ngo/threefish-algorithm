@@ -4,7 +4,7 @@ from       util import key_generation, rotl, rotr, readMsg, writeMsg
 #===========================
 tweaks     = [3,4] 
 blocksize  = 256 
-nr         = 76
+nr         = 72
 nb_key     = 4
 mode       = cts.MODE_CBC
 r_x, r_y   = 1, 1
