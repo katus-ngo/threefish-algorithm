@@ -1,8 +1,8 @@
 #!/usr/bin/python3  
 # -*- coding: UTF-8 -*-
 
-from   util     import *
-from   md5      import *
+from   util     import magenta, cyan, green, dechunk, rFile, wFile
+from   cts      import MODE_ECB, MODE_CBC
 from   fish     import cipher_threefish_msg
 from   fish     import decipher_threefish_msg
 from   platform import system
@@ -109,12 +109,12 @@ def init():
                     s = message_file_path
                 msg = rFile(s)
                 if ECB_CBC == 0:
-                    cipher_str = cipher_threefish_msg(msg, cts.MODE_ECB)
+                    cipher_str = cipher_threefish_msg(msg, MODE_ECB)
                     wFile(cipher_file_path, cipher_str)
                     print(green(cipher_str))
                     print(green('Encrypt success!'))
                 elif ECB_CBC == 1:
-                    cipher_str = cipher_threefish_msg(msg, cts.MODE_CBC)
+                    cipher_str = cipher_threefish_msg(msg, MODE_CBC)
                     wFile(cipher_file_path, cipher_str)
                     print(green(cipher_str))
                     print(green('Encrypt success!'))
@@ -124,12 +124,12 @@ def init():
                     s = cipher_file_path
                 msg = rFile(s)
                 if ECB_CBC == 0:
-                    plain_str = green(decipher_threefish_msg(msg, cts.MODE_ECB))
+                    plain_str = green(decipher_threefish_msg(msg, MODE_ECB))
                     wFile(plain_text_file_path, plain_str)
                     print(green(plain_str))
                     print(green('Decrypt success!'))
                 elif ECB_CBC == 1:
-                    plain_str = green(decipher_threefish_msg(msg, cts.MODE_CBC))
+                    plain_str = green(decipher_threefish_msg(msg, MODE_CBC))
                     wFile(plain_text_file_path, plain_str)
                     print(green(plain_str))
                     print(green('Decrypt success!'))

@@ -1,6 +1,5 @@
-from       util import key_generation
 import     cts
-import     util
+from       util import key_generation, rotl, rotr, readMsg, writeMsg
 
 #===========================
 tweaks     = [3,4] 
@@ -90,13 +89,13 @@ class cipher_threefish:
     def mix(self, r_x, r_y, np):
         np*=2
         self.c_bloc[np] = (self.c_bloc[np] + self.c_bloc[np+1])%(2**64)
-        self.c_bloc[np+1] = self.c_bloc[np]^ (util.rotl(self.c_bloc[np+1], self.r[r_x % self.depth][r_y]))
+        self.c_bloc[np+1] = self.c_bloc[np]^ (rotl(self.c_bloc[np+1], self.r[r_x % self.depth][r_y]))
 
 
     def demix(self, r_x, r_y, np):
         np*=2
         self.c_bloc[np+1] = (self.c_bloc[np+1]^self.c_bloc[np]  )%(2**64)
-        self.c_bloc[np+1] = util.rotr(self.c_bloc[np+1], self.r[r_x % self.depth][r_y])
+        self.c_bloc[np+1] = rotr(self.c_bloc[np+1], self.r[r_x % self.depth][r_y])
         self.c_bloc[np] = (self.c_bloc[np] - self.c_bloc[np+1])%(2**64)
 
     # update the subkey (executed after the end of one round's calculation) for the next round
@@ -190,68 +189,12 @@ def decipher_threefish_blocs(mode,c_blocs, keys, blocksize, nr, tweaks):
         c_blocs[i]=cipher[i].c_bloc
     return c_blocs
 
-def decipher_threefish_file(filename,mode):
-    fo = open(filename,"r")
-    str1=fo.read()
-    fo.closed
-
-    blocs_list=str1.split('0b')
-    c_blocs  = []
-    tmp_list = []
-    for i in range(1,len(blocs_list)):
-        tmp_list.append(int(blocs_list[i],2))
-        if (i%4 == 0 ):    
-            c_blocs.append(tmp_list)
-            tmp_list=[]    
-
-    #set iv 
-    if ( nw == 4 ) : iv = cts.INITIAL_VECTEUR_4 
-    elif (nw == 8 ) : iv = cts.INITIAL_VECTEUR_8 
-    elif (nw == 16 ) : iv = cts.INITIAL_VECTEUR_16 
-
-    #generation of initials list of keys, nb_keys in a round = nb of messages in a bloc = blocksize / messagesize  
-    keys= key_generation(nb_key)
-
-    #c_blocs= util.readFile(filename, blocksize)
-    c_blocs = decipher_threefish_blocs(mode,c_blocs, keys, blocksize, nr, tweaks)
-
-    fo = open(filename,"w")
-    fo.write(util.writeMsg(c_blocs))
-    fo.close()
-
-def cipher_threefish_file(filename,mode):
-    #set iv 
-    if ( nw == 4 ) : iv = cts.INITIAL_VECTEUR_4 
-    elif (nw == 8 ) : iv = cts.INITIAL_VECTEUR_8 
-    elif (nw == 16 ) : iv = cts.INITIAL_VECTEUR_16 
-
-    #generation of initials list of keys, nb_keys in a round = nb of messages in a bloc = blocksize / messagesize  
-    keys = key_generation(nb_key)
-
-    c_blocs = util.readFile(filename, blocksize)
-    c_blocs = cipher_threefish_blocs(mode,c_blocs, keys, blocksize, nr, tweaks)
-    
-    #util.writeFile(filename, c_blocs)
-    str1=""
-    for i in range(len(c_blocs)):
-        for j in range(nw):
-            str1+=str(bin(c_blocs[i][j]))
-    
-    fo = open(filename,"w+")
-    fo.write(str1)
-    fo.close()
-
 def cipher_threefish_msg(msg,mode):
-    #set iv 
-    if ( nw == 4 ) : iv = cts.INITIAL_VECTEUR_4 
-    elif (nw == 8 ) : iv = cts.INITIAL_VECTEUR_8 
-    elif (nw == 16 ) : iv = cts.INITIAL_VECTEUR_16 
 
     #generation of initials list of keys, nb_keys in a round = nb of messages in a bloc = blocksize / messagesize  
     keys= key_generation(nb_key)
 
-    #get blocs from files 
-    c_blocs= util.readMsg(msg,blocksize)
+    c_blocs= readMsg(msg,blocksize)
     c_blocs = cipher_threefish_blocs(mode,c_blocs, keys, blocksize, nr, tweaks)
     
     str1=""
@@ -269,19 +212,11 @@ def decipher_threefish_msg(msg,mode):
             c_blocs.append(tmp_list)
             tmp_list=[]    
     
-
-    #set iv 
-    if ( nw == 4 ) : iv = cts.INITIAL_VECTEUR_4 
-    elif (nw == 8 ) : iv = cts.INITIAL_VECTEUR_8 
-    elif (nw == 16 ) : iv = cts.INITIAL_VECTEUR_16 
-
-    #generation of initials list of keys, nb_keys in a round = nb of messages in a bloc = blocksize / messagesize  
     keys= key_generation(nb_key)
 
-    #c_blocs= util.readFile(filename, blocksize)
     c_blocs = decipher_threefish_blocs(mode,c_blocs, keys, blocksize, nr, tweaks)
 
-    decipher_text=util.writeMsg(c_blocs)
+    decipher_text = writeMsg(c_blocs)
     return decipher_text
 
 
