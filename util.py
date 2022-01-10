@@ -126,6 +126,19 @@ def writeFile(filename, arr):
     fo.write(bytesToUtf8(bytes(clearZero([int('0b' + el, 2) for el in newArr]))))
     return fo.close()
 
+def rFile(filename):
+    fo = open(filename, 'r')
+    str = fo.read()
+    fo.close()
+    return str
+
+def wFile(filename, str):
+    fo = open(filename, 'w')
+    fo.write(str)
+    return fo.close()
+
+
+
 def readMsg(str, blockSize):
     str_utf8 = str.encode("utf-8")
 

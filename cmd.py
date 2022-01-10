@@ -39,6 +39,10 @@ Press 'up' and 'down' to choose\nPress 'left' to back and 'right' to next
 Press ESC to exit
 """)
 
+message_file_path = 'assets/message.txt'
+cipher_file_path = 'assets/cipher_text.txt'
+plain_text_file_path = 'assets/plain_text.txt'
+
 
 M = list(dictMenu)     # F menu
 m = []                 # store menus except the F menu, 
