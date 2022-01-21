@@ -47,15 +47,15 @@ def clearZero(arr):
         l -= 1
     return arr
 
-def rFile(filename):
-    fo = open(filename, 'r')
+def rFile(filename, mode = 'r'):
+    fo = open(filename, mode)
     str = fo.read()
     fo.close()
     return str
 
-def wFile(filename, str):
-    fo = open(filename, 'w')
-    fo.write(str)
+def wFile(filename, str, pos = 0, mode = 'w'):
+    fo = open(filename, mode)
+    fo.write(str[pos:])
     return fo.close()
 
 
